@@ -21,7 +21,10 @@ public:
         glTranslatef(xCenter, yCenter, 0);
         glColor3fv(color);
         if (hollow)
-            glBegin(GL_POINTS);
+        {
+            glPointSize(4);
+             glBegin(GL_POINTS);
+        }     
         else if (!hollow)
             glBegin(GL_POLYGON);
         for (float i = startAngle; i <= stopAngle; i++)

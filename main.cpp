@@ -5,8 +5,7 @@
 # include "monkey.hpp"
 # define STB_IMAGE_IMPLEMENTATION
 # include "stb_image.h"
-
-
+#include "crocodile.hpp"
 unsigned int bg1;
 
 void init(void)
@@ -37,8 +36,8 @@ void displayScene1(void)
     
     Monkey monkey;
     monkey.drawMonkey(3400,2600,0.5);
-    
-    
+    Crocodile crocodile;
+    crocodile.draw(1400,500);
     
     Apple apple;
     apple.draw(3600,2800,1);
@@ -99,8 +98,8 @@ int main(int argc, char **argv)
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize(1024, 1024);
-    glutCreateWindow("A Smart Crow");
+    glutInitWindowSize(1024, 768);
+    glutCreateWindow("A Clever Monkey");
     glutDisplayFunc(displayScene1);
     loadBackground();
     glutTimerFunc(500,timer,0);

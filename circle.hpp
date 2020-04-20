@@ -1,3 +1,5 @@
+# ifndef CIRCLE_H
+# define CIRCLE_H
 # include <GL/glut.h>
 #include <math.h>
 class Circle
@@ -36,3 +38,4 @@ public:
         glPopMatrix();
     }
 };
+# endif /*CIRCLE_H*/

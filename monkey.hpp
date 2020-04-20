@@ -1,3 +1,5 @@
+# ifndef MONKEY_H
+# define MONKEY_H
 # include <GL/glut.h>
 # include "circle.hpp"
 # include "line.hpp"
@@ -103,3 +105,4 @@ class Monkey
         }
         
 };
+# endif /*MONKEY_H*/
