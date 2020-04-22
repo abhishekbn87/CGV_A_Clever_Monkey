@@ -1,5 +1,5 @@
-# ifndef LINE_H
-# define LINE_H
+#ifndef LINE_H
+#define LINE_H
 #include <GL/glut.h>
 class Line
 {
@@ -13,7 +13,7 @@ public:
         color[1] = g;
         color[2] = b;
     }
-    void draw(int x1, int y1, int x2, int y2, int depthIndex,int width)
+    void draw(int x1, int y1, int x2, int y2, int depthIndex, int width)
     {
         glColor3fv(color);
         glLineWidth(width);
@@ -23,4 +23,4 @@ public:
         glEnd();
     }
 };
-# endif /*LINE_H*/
+#endif /*LINE_H*/

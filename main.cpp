@@ -1,13 +1,16 @@
-# include <iostream>
+#include <iostream>
 #include <GL/glut.h>
-# include "apple.hpp"
+#include "apple.hpp"
 // # include "elipse.hpp"
-# include "monkey.hpp"
-# define STB_IMAGE_IMPLEMENTATION
-# include "stb_image.h"
+#include "monkey.hpp"
+#define SPACEBAR 32
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 #include "crocodile.hpp"
 unsigned int bg1;
-float xpos=2870,ypos = 2900;
+int scene = 1;
+bool appleDown = false;
+float xpos = 2870, ypos = 2900, cXpos = 915;
 
 void init(void)
 {
@@ -18,21 +21,22 @@ void init(void)
     glClearColor(1, 1, 1, 1);
 }
 
-void displayScene1(void)
+void displayScene1()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     Monkey monkey;
-    monkey.drawMonkey(3400,2600,0.5);
+    monkey.drawMonkey(3400, 2600, 0.5);
     Crocodile crocodile;
-    crocodile.draw(1400,500,305);
-    
+    crocodile.draw(cXpos, 575, 280);
     Apple apple;
-    apple.draw(3600,2800,1);
-    apple.draw(3600,3900,1);
-    apple.draw(3400,2800,1);    
-    apple.draw(3400,3800,1);
-    apple.draw(3000,3800,1);
-    apple.draw(2600,3100,1);
+    glDisable(GL_TEXTURE_2D);
+    apple.draw(3600, 2800, 1);
+    apple.draw(3600, 3900, 1);
+    apple.draw(3400, 2800, 1);
+    apple.draw(3400, 3800, 1);
+    apple.draw(3000, 3800, 1);
+    apple.draw(2600, 3100, 1);
+    apple.draw(xpos, ypos, 1, 0);
     glEnable(GL_TEXTURE_2D);
     glColor3f(1, 1, 1);
     glBindTexture(GL_TEXTURE_2D, bg1);
@@ -50,30 +54,11 @@ void displayScene1(void)
     glDisable(GL_TEXTURE_2D);
     glutSwapBuffers();
 }
-
 void displayScene2()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glBegin(GL_LINES);
-    glVertex3f(3500,3600,0);
-    glVertex3f(2800,1200,0);
-    glEnd();
-    Monkey monkey;
-    monkey.drawMonkey(3400,2600,0.5);
-    Crocodile crocodile;
-    crocodile.draw(1900,500,290);
-    Apple apple;
-    glDisable(GL_TEXTURE_2D);
-    apple.draw(3600,2800,1);
-    apple.draw(3600,3900,1);
-    apple.draw(3400,2800,1);    
-    apple.draw(3400,3800,1);
-    apple.draw(3000,3800,1);
-    apple.draw(2600,3100,1);
-    apple.draw(xpos,ypos,1,0);
     glEnable(GL_TEXTURE_2D);
     glColor3f(1, 1, 1);
-    
     glBindTexture(GL_TEXTURE_2D, bg1);
     glBegin(GL_QUADS);
     glVertex3f(0, 0, 10);
@@ -89,27 +74,51 @@ void displayScene2()
     glDisable(GL_TEXTURE_2D);
     glutSwapBuffers();
 }
-
-void idle()
+void moveCroc()
 {
-    if(ypos>=300)
+    if (cXpos <= 5000)
     {
-        ypos-=30;
+        cXpos += 30;
         glutPostRedisplay();
     }
     else
     {
         glutIdleFunc(NULL);
+        scene == 2;
+        glutDisplayFunc(displayScene2);
+        glutPostRedisplay();
     }
-    
-    
-    
+}
+void keyboard(unsigned char key, int x, int y)
+{
+    if (scene == 1)
+        if (appleDown)
+            if (key == SPACEBAR)
+            {
+                xpos = 6000;
+                glutPostRedisplay();
+                glutIdleFunc(moveCroc);
+            }
+}
+void idle()
+{
+    if (ypos >= 300)
+    {
+        ypos -= 30;
+        glutPostRedisplay();
+    }
+    else
+    {
+        appleDown = true;
+        glutIdleFunc(NULL);
+    }
 }
 
-void mouse(int button,int state,int x,int y)
+void mouse(int button, int state, int x, int y)
 {
-    if(button==GLUT_LEFT_BUTTON && state==GLUT_DOWN)
-        glutIdleFunc(idle);
+    if (scene == 1)
+        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+            glutIdleFunc(idle);
 }
 
 void loadBackground(void)
@@ -148,10 +157,11 @@ int main(int argc, char **argv)
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(1024, 768);
     glutCreateWindow("A Clever Monkey");
-    glutDisplayFunc(displayScene2);
+    glutDisplayFunc(displayScene1);
     glutMouseFunc(mouse);
+    glutKeyboardFunc(keyboard);
     loadBackground();
-    glutTimerFunc(500,timer,0);
+    glutTimerFunc(500, timer, 0);
     glEnable(GL_DEPTH_TEST);
     init();
     glutMainLoop();

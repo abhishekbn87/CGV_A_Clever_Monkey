@@ -1,6 +1,6 @@
-# ifndef CIRCLE_H
-# define CIRCLE_H
-# include <GL/glut.h>
+#ifndef CIRCLE_H
+#define CIRCLE_H
+#include <GL/glut.h>
 #include <math.h>
 class Circle
 {
@@ -15,7 +15,7 @@ public:
         color[1] = g;
         color[2] = b;
     }
-    void draw(int r, float xpos, float ypos, int depthIndex, bool hollow,int startAngle,int endAngle)
+    void draw(int r, float xpos, float ypos, int depthIndex, bool hollow, int startAngle, int endAngle)
     {
         this->depthIndex = depthIndex;
         glPushMatrix();
@@ -24,10 +24,10 @@ public:
         if (!hollow)
             glBegin(GL_POLYGON);
         else
-            {
-                glPointSize(5);
-                glBegin(GL_POINTS);
-            }
+        {
+            glPointSize(5);
+            glBegin(GL_POINTS);
+        }
         for (int i = startAngle; i <= endAngle; i++)
         {
             float x = r * cos((i * 3.142) / 180);
@@ -38,4 +38,4 @@ public:
         glPopMatrix();
     }
 };
-# endif /*CIRCLE_H*/
+#endif /*CIRCLE_H*/
