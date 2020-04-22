@@ -11,11 +11,11 @@ private:
     Circle circle;
 
 public:
-    void draw(int xpos, int ypos)
+    void draw(int xpos, int ypos,int rotAngle)
     {
         glPushMatrix();
-        // glTranslatef(xpos,ypos,0);
-        // glRotatef(305,0,0,1);
+        glTranslatef(xpos,ypos,0);
+        glRotatef(rotAngle,0,0,1);
         ellipse.setColor(0, 0.5, 0);
         ellipse.draw(200, 600, 200, 600, 7, false, 0, 360);
         ellipse.setColor(0, 0.2, 0);
