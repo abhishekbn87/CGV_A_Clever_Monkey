@@ -96,5 +96,23 @@ public:
         drawTail();
         glPopMatrix();
     }
+
+    void drawMonkey(int xpos, int ypos, float scale,int rotAngle)
+    {
+        glPushMatrix();
+        glTranslatef(xpos, ypos, 0);
+        glRotatef(rotAngle,0,0,1);
+        glScalef(scale, scale, scale);
+        drawFace();
+        drawEyes();
+        drawNose();
+        drawMouth();
+        drawEars();
+        drawBody();
+        drawHands();
+        drawLegs();
+        drawTail();
+        glPopMatrix();
+    }
 };
 #endif /*MONKEY_H*/
