@@ -12,7 +12,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include "crocodile.hpp"
-unsigned int bg1, bg2;
+unsigned int bg1, bg2,bg3;
 int scene = 1;
 bool appleMove = false;
 bool appleDown = false;
@@ -25,8 +25,10 @@ bool monkeyDown = false;
 bool moveMonkeyCroc = false;
 bool displayCloudS3 = true;
 bool displayCloudS4 = true;
+bool displayCloudS5 = false;
 bool dialogsDone = false;
 bool crocMonkeyS4 = true;
+bool crocMonkeyS5 = true;
 char *maleLine;
 char *maleLine2 = " ";
 char *femaleLine;
@@ -41,7 +43,7 @@ void moveCroc();
 void keyboard();
 void timer(int value);
 void idle3();
-void idle4();
+void idle4(int );
 void moveCrocMonkey();
 float xpos = 2870, ypos = 2900, cXpos = 915, axpos = 1500, mypos = 2600, mxpos = 3400, b1xpos, b2xpos;
 void idle5();
@@ -443,6 +445,47 @@ void displayScene5()
     Crocodile crocodile;
     crocodile.draw(cXpos, 575, 280);
     Apple apple;
+    if(displayCloudS5)
+    {   
+        if(crocMonkeyS5)
+        {
+            switch(monkeyCounter)
+            {
+                case 0: monkeyLine = "You dumb creature!!";
+                        monkeyLine2 = " ";
+                        break;
+                case 1: monkeyLine = "How can a creature";
+                        monkeyLine2 = "Live without its heart??";
+                        break;
+                case 2: monkeyLine = "You have lost ";
+                        monkeyLine2 = "My trust you stupid creature";
+                        break;
+                case 3: monkeyLine = "Get away from my sight";
+                        monkeyLine2 = "you ungrateful creature";
+                        displayCloudS5 = false;
+                        break;
+            }
+            crocodile.cloud(3800,3500,monkeyLine,monkeyLine2);
+
+        }
+        else
+        {
+            switch(maleCounter)
+            {
+                case 0: maleLine = "You tricked me!!";
+                        maleLine2 = " ";
+                        break;
+                case 1: maleLine = "What shall I tell";
+                        maleLine2 = "my wife now??";
+                        break;
+                case 2: maleLine = "You proved too clever";
+                        maleLine2 = "for my cunning";
+                        break;
+            }
+            crocodile.cloud(2300,1000,maleLine,maleLine2);
+        }
+        
+    }
     glDisable(GL_TEXTURE_2D);
     apple.draw(3600, 2800, 1);
     apple.draw(3600, 3900, 1);
@@ -468,24 +511,56 @@ void displayScene5()
     glutSwapBuffers();
 }
 
+void displayScene6()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_TEXTURE_2D);
+    glColor3f(1, 1, 1);
+    glBindTexture(GL_TEXTURE_2D, bg3);
+    glBegin(GL_QUADS);
+    glVertex3f(0, 0, 10);
+    glTexCoord2f(0, 0);
+    glVertex3f(0, 5000, 10);
+    glTexCoord2f(0, 1);
+    glVertex3f(5000, 5000, 10);
+    glTexCoord2f(1, 1);
+    glVertex3f(5000, 0, 10);
+    glTexCoord2f(1, 0);
+    glEnd();
+    glFlush();
+    glDisable(GL_TEXTURE_2D);
+    glutSwapBuffers();
+}
+
 void moveCroc()
 {
     if (cXpos <= 5000)
-    {
+    {   
         cXpos += 30;
         glutPostRedisplay();
     }
     else
     {
         glutIdleFunc(NULL);
-        scene += 1;
         dialogsDone = false;
         cXpos = 0;
         monkeyCounter = 0;
         maleCounter = 0;
-        glutDisplayFunc(displayScene2);
+        if(scene==1)
+        {
+            scene++;
+            glutDisplayFunc(displayScene2);
+            glutPostRedisplay();
+        }
+        else
+        {
+            scene++;
+            glutDisplayFunc(displayScene6);
+            glutPostRedisplay();
+        }
+        
         glutIdleFunc(idle2);
-        glutPostRedisplay();
+        
     }
 }
 
@@ -529,6 +604,7 @@ void moveCrocMonkey()
         monkeyCounter = 0;
         dialogsDone = false;
         glutDisplayFunc(displayScene4);
+        glutTimerFunc(50,idle4,0);
         cXpos = 0;
         mxpos = 1200;
         b1xpos = 1800;
@@ -575,17 +651,15 @@ void keyboard(unsigned char key, int x, int y)
             }
         }
     }
-    else if (scene == 4)
-    {
-        if (dialogsDone)
-            glutIdleFunc(idle4);
-    }
+    else if (scene == 5)
+        glutIdleFunc(moveCroc);
+    
 }
-/* void wait(int value)
+ void wait(int value)
 {
     ypos = 2900;
     glutPostRedisplay();
-} */
+}
 
 void idle()
 {
@@ -600,7 +674,7 @@ void idle()
         {
             appleDown = true;
             glutIdleFunc(NULL);
-            //glutTimerFunc(1000, wait, 0);
+            glutTimerFunc(1000, wait, 0);
         }
     }
 }
@@ -649,7 +723,7 @@ void idle3()
     }
 }
 
-void idle4()
+void idle4(int value)
 {
     if (mxpos <= 6000 && cXpos <= 6000)
     {
@@ -658,12 +732,12 @@ void idle4()
         b1xpos += 10;
         b2xpos += 10;
         glutPostRedisplay();
+        glutTimerFunc(50,idle4,0);
     }
     else
     {
-        glutIdleFunc(NULL);
         monkeyCounter = 0;
-        monkeyCounter = 0;
+        maleCounter = 0;
         femaleCounter = 0;
         cXpos = 0;
         mxpos = 1200;
@@ -677,16 +751,17 @@ void idle5()
 {
     if (!monkeyDown)
     {
-        if (mypos <= 3400)
+        if (mypos <= 2600 && mxpos<=3400)
         {
             mypos += 60;
-            mxpos += 30;
+            mxpos += 60;
             glutPostRedisplay();
         }
         else
         {
 
             monkeyDown = true;
+            displayCloudS5 = true;
             glutPostRedisplay();
             glutIdleFunc(NULL);
         }
@@ -715,12 +790,10 @@ void mouse(int button, int state, int x, int y)
 
                 glutPostRedisplay();
             }
+           else if(button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
+            glutIdleFunc(idle);
         }
-        else
-        {
-            if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-                glutIdleFunc(idle);
-        }
+        
     }
 
     else if (scene == 2)
@@ -789,8 +862,25 @@ void mouse(int button, int state, int x, int y)
     {
         if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
         {
-            glutIdleFunc(idle5);
+            if(monkeyDown)
+            {
+                std::cout<<"Called";
+                if(crocMonkeyS5)
+                {
+                        crocMonkeyS5 = false;
+                        monkeyCounter++;
+                }
+                    else
+                {
+                        crocMonkeyS5 = true;
+                        maleCounter++;
+                }
+                glutPostRedisplay();
+            }
+            else 
+                glutIdleFunc(idle5);   
         }
+       
     }
 }
 
@@ -830,6 +920,30 @@ void loadBackground2(void)
     // load and generate the bg1
     int width, height, nrChannels;
     unsigned char *data = stbi_load("Scene_2_Final.png", &width, &height, &nrChannels, STBI_rgb_alpha);
+    if (data)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        //glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load bg1" << std::endl;
+    }
+    stbi_image_free(data);
+}
+
+void loadBackground3()
+{
+    glGenTextures(1, &bg3);
+    glBindTexture(GL_TEXTURE_2D, bg3);
+    // set the bg1 wrapping/filtering options (on the currently bound bg1 object)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // load and generate the bg1
+    int width, height, nrChannels;
+    unsigned char *data = stbi_load("ty.jpg", &width, &height, &nrChannels, STBI_rgb_alpha);
     if (data)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
