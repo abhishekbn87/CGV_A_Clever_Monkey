@@ -1,0 +1,8 @@
+version: "3"
+services:
+  vnc:
+    image: rottiakash/a_smart_crow
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/content

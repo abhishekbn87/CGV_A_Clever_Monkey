@@ -1,6 +1,10 @@
 #ifndef CROCODILE_H
 #define CROCODILE_H
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 #include <math.h>
 #include "elipse.hpp"
 #include "circle.hpp"
@@ -18,12 +22,12 @@ private:
     }
 
 public:
-    void draw(int xpos, int ypos, int rotAngle,float scale)
+    void draw(int xpos, int ypos, int rotAngle, float scale)
     {
         glPushMatrix();
         glTranslatef(xpos, ypos, 0);
         glRotatef(rotAngle, 0, 0, 1);
-        glScalef(scale,scale,scale);
+        glScalef(scale, scale, scale);
         ellipse.setColor(0, 0.5, 0);
         ellipse.draw(200, 1600, 200, 600, 7, false, 0, 360);
         ellipse.setColor(0, 0.2, 0);
@@ -71,7 +75,7 @@ public:
         glPopMatrix();
     }
 
-     void draw(int xpos, int ypos, int rotAngle)
+    void draw(int xpos, int ypos, int rotAngle)
     {
         glPushMatrix();
         glTranslatef(xpos, ypos, 0);
@@ -123,12 +127,12 @@ public:
         glPopMatrix();
     }
 
-    void draw(int xpos, int ypos, int rotAngle, float scale,int dummy)
+    void draw(int xpos, int ypos, int rotAngle, float scale, int dummy)
     {
         glPushMatrix();
         glTranslatef(xpos, ypos, 0);
         glRotatef(rotAngle, 0, 0, 1);
-        glScalef(scale,-scale,scale);
+        glScalef(scale, -scale, scale);
         ellipse.setColor(0, 0.5, 0);
         ellipse.draw(200, 1600, 200, 600, 7, false, 0, 360);
         ellipse.setColor(0, 0.2, 0);
@@ -182,8 +186,8 @@ public:
         glTranslatef(xpos, ypos, 0);
         Circle circle;
         circle.setColor(1, 1, 1);
-        circle.draw(80, 60, 80, 1, false,0,360);
-        circle.draw(100, 150, 200, 1, false,0,360);
+        circle.draw(80, 60, 80, 1, false, 0, 360);
+        circle.draw(100, 150, 200, 1, false, 0, 360);
         Ellipse ellipse;
         ellipse.setColor(1, 1, 1);
         ellipse.draw(680, 400, 700, 200, 1, false, 0, 360);
@@ -191,6 +195,5 @@ public:
         drawtext(50, 330, line2);
         glPopMatrix();
     }
-
 };
 #endif /*CROCODILE_H*/

@@ -1,6 +1,10 @@
 #ifndef MONKEY_H
 #define MONKEY_H
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 #include "circle.hpp"
 #include "line.hpp"
 #include "elipse.hpp"
@@ -97,11 +101,11 @@ public:
         glPopMatrix();
     }
 
-    void drawMonkey(int xpos, int ypos, float scale,int rotAngle)
+    void drawMonkey(int xpos, int ypos, float scale, int rotAngle)
     {
         glPushMatrix();
         glTranslatef(xpos, ypos, 0);
-        glRotatef(rotAngle,0,0,1);
+        glRotatef(rotAngle, 0, 0, 1);
         glScalef(scale, scale, scale);
         drawFace();
         drawEyes();
