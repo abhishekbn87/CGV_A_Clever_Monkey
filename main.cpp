@@ -1091,7 +1091,7 @@ void processMenu(int option)
     switch (option)
     {
     case 1:
-        scene = 1;
+        scene = 0;
         appleMove = false;
         appleDown = false;
         displayCloudS1 = true;
@@ -1151,7 +1151,7 @@ int main(int argc, char **argv)
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(1024, 768);
     glutCreateWindow("A Clever Monkey");
-    glutFullScreen();
+    // glutFullScreen();
     glutDisplayFunc(displayIntro);
     glutMouseFunc(mouse);
     glutKeyboardFunc(keyboard);
