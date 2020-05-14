@@ -33,6 +33,7 @@ bool displayCloudS5 = false;
 bool dialogsDone = false;
 bool crocMonkeyS4 = true;
 bool crocMonkeyS5 = true;
+bool displayMoralS5 = false;
 char *maleLine;
 char *maleLine2 = " ";
 char *femaleLine;
@@ -54,12 +55,26 @@ void moveCrocMonkey();
 float xpos = 2870, ypos = 2900, cXpos = 915, axpos = 1500, mypos = 2600, mxpos = 3400, b1xpos, b2xpos;
 void idle5();
 
-void drawtext(float x, float y, char *s)
+void drawtext(float x, float y, char *s,bool flag,bool big)
 {
-    glColor3f(0, 0, 0);
+    if(flag)
+        glColor3f(0, 0, 0);
+    else
+    {
+        glColor3f(1,1,1);
+    }
+    
     glRasterPos2f(x, y);
-    for (int i = 0; s[i] != '\0'; i++)
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, s[i]);
+    if(big)
+    {
+        for (int i = 0; s[i] != '\0'; i++)
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, s[i]);
+    }
+    else
+    {
+        for (int i = 0; s[i] != '\0'; i++)
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, s[i]);
+    }
 }
 
 void init(void)
@@ -195,7 +210,7 @@ void displayScene1()
             crocodile.cloud(2300, 800, maleLine, maleLine2);
         }
     }
-    drawtext(1300, 3800, line);
+    drawtext(1300, 3800, line,true,false);
     glEnable(GL_TEXTURE_2D);
     glColor3f(1, 1, 1);
     glBindTexture(GL_TEXTURE_2D, bg1);
@@ -234,7 +249,7 @@ void displayScene2()
                 maleLine2 = " ";
                 break;
             case 1:
-                maleLine = "How are you";
+                maleLine = "How was your day";
                 maleLine2 = " ";
                 break;
             case 2:
@@ -272,7 +287,7 @@ void displayScene2()
                 femaleLine2 = " ";
                 break;
             case 1:
-                femaleLine = "Im fine...How are you";
+                femaleLine = "Nothing special Mr Croc...what about you";
                 break;
             case 2:
                 femaleLine = "Wow apples!!";
@@ -294,7 +309,7 @@ void displayScene2()
             crocodile.cloud(2900, 1000, femaleLine, femaleLine2);
         }
     }
-    drawtext(1700, 4000, line);
+    drawtext(1700, 4000, line,true,false);
     glEnable(GL_TEXTURE_2D);
     glColor3f(1, 1, 1);
     glBindTexture(GL_TEXTURE_2D, bg2);
@@ -399,7 +414,7 @@ void displayScene3()
             crocodile.cloud(3000, 1000, maleLine, maleLine2);
         }
     }
-    drawtext(1300, 3800, line);
+    drawtext(1300, 3800, line,true,false);
     glEnable(GL_TEXTURE_2D);
     glColor3f(1, 1, 1);
     glBindTexture(GL_TEXTURE_2D, bg1);
@@ -484,7 +499,7 @@ void displayScene4()
             crocodile.cloud(b2xpos, 1000, maleLine, maleLine2);
         }
     }
-    drawtext(1700, 4000, line);
+    drawtext(1700, 4000, line,true,false);
     glEnable(GL_TEXTURE_2D);
     glColor3f(1, 1, 1);
     glBindTexture(GL_TEXTURE_2D, bg2);
@@ -559,7 +574,16 @@ void displayScene5()
             crocodile.cloud(2300, 1000, maleLine, maleLine2);
         }
     }
-    drawtext(1300, 3800, line);
+    drawtext(1300, 3800, line,true,false);
+    if(displayMoralS5==true)
+    {
+        elipse.setColor(0,0.5,0.5);
+        elipse.draw(2500,2500,2000,1000,1,false,0,360);
+        drawtext(1300,2500,"Friendship is beautiful.Treasure it....dont misuse it",false,true);
+        glutTimerFunc(5000,timer,0);
+        glutDisplayFunc(displayMoral);
+        
+    }
     glDisable(GL_TEXTURE_2D);
     apple.draw(3600, 2800, 1);
     apple.draw(3600, 3900, 1);
@@ -590,7 +614,7 @@ void moveCroc()
     if (cXpos <= 5000)
     {
         cXpos += 30;
-        glutPostRedisplay();
+       glutPostRedisplay();
     }
     else
     {
@@ -609,8 +633,11 @@ void moveCroc()
         else
         {
             scene++;
-            glutDisplayFunc(displayMoral);
+            mxpos=6000;
+            cXpos = 6000;
+            displayMoralS5 = true;
             glutPostRedisplay();
+            
         }
 
         glutIdleFunc(idle2);
