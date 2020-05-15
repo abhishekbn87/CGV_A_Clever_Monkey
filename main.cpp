@@ -636,6 +636,7 @@ void moveCroc()
             mxpos=6000;
             cXpos = 6000;
             displayMoralS5 = true;
+            line = " ";
             glutPostRedisplay();
             
         }
