@@ -1001,7 +1001,7 @@ void loadIntro(void)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // load and generate the bg1
     int width, height, nrChannels;
-    unsigned char *data = stbi_load("intro.psd", &width, &height, &nrChannels, STBI_rgb_alpha);
+    unsigned char *data = stbi_load("Front_Sheet.psd", &width, &height, &nrChannels, STBI_rgb_alpha);
     if (data)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
